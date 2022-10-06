@@ -1,0 +1,83 @@
+DROP TABLE WEEKLY_SALES_REPORT_DATA; 
+CREATE TABLE WEEKLY_SALES_REPORT_DATA AS 
+        ((
+         SELECT
+                SUMX.DEAL_YR               YEAR 
+                ,SUMX.QUARTER_NUM          QUARTER
+                ,SUMX.MONTH_NUM            MONTH
+                ,SUMX.PROMO_WK             WEEK
+                ,SUMX.DIVISION_NAME        DIVISION
+                ,SUMX.LOB_NM               LOB
+                ,SUMX.CATEGORY_NM          CATEGORY
+                ,SUMX.FINELINE_NM          FINELINE
+                ,MPP.MPP_NAME                  MPP      
+                ,SUM(SUMX.POS_UNITS)       POS_UNITS
+                ,SUM(SUMX.POS$)            POS_DOLLARS
+                ,CASE
+                   WHEN SUMX.DEAL_PRICE>0 
+                   THEN 'PROMO' 
+                   ELSE 'PROMO'
+                 END DEAL_TYPE          
+         FROM EDWPRDAWPRP.ADMIN_CTC.P0004_SUMX_V2 SUMX
+         LEFT JOIN P0016_EXT_MPP_LIST_V3 MPP ON SUMX.CATEGORY_NM = MPP.BUS_CAT
+         WHERE DEAL_YR IN (2019,2020,2021,2022) AND POS_UNITS>0 AND DIVISION_NAME <> 'NON MERCHANDISING DIVISION' AND DIVISION_NAME <> 'N/A'
+         GROUP BY
+                 SUMX.DEAL_YR
+                ,SUMX.QUARTER_NUM
+                ,SUMX.MONTH_NUM
+                ,SUMX.PROMO_WK
+                ,SUMX.DIVISION_NAME        
+                ,SUMX.LOB_NM               
+                ,SUMX.CATEGORY_NM          
+                ,SUMX.FINELINE_NM 
+                ,MPP.MPP_NAME  
+                ,DEAL_TYPE        
+         )
+         UNION ALL 
+         (
+         SELECT 
+               REG.YEAR 
+                ,CASE 
+                    WHEN REG.WEEK<14 THEN 1 
+                    WHEN REG.WEEK>13 AND REG.WEEK<27 THEN 2
+                    WHEN REG.WEEK>26 AND REG.WEEK<40 THEN 3
+                    ELSE 4 
+                END QUARTER   
+               ,CASE 
+                    WHEN REG.WEEK<5 THEN 1  
+                    WHEN REG.WEEK>4 AND REG.WEEK<9 THEN 2
+                    WHEN REG.WEEK>8 AND REG.WEEK<14 THEN 3
+                    WHEN REG.WEEK>13 AND REG.WEEK<18 THEN 4
+                    WHEN REG.WEEK>17 AND REG.WEEK<22 THEN 5
+                    WHEN REG.WEEK>21 AND REG.WEEK<27 THEN 6
+                    WHEN REG.WEEK>26 AND REG.WEEK<31 THEN 7
+                    WHEN REG.WEEK>30 AND REG.WEEK<35 THEN 8
+                    WHEN REG.WEEK>34 AND REG.WEEK<40 THEN 9
+                    WHEN REG.WEEK>39 AND REG.WEEK<44 THEN 10
+                    WHEN REG.WEEK>43 AND REG.WEEK<48 THEN 11
+                    ELSE 12
+                END MONTH    
+               ,REG.WEEK
+               ,REG.DIVISION
+               ,REG.LOB 
+               ,REG.CATEGORY
+               ,REG.FINELINE
+               ,MPP.MPP_NAME                  MPP 
+               ,SUM(REG.SUM_UNITS) POS_UNITS 
+               ,SUM(REG.SUM_DOLLARS) POS_DOLLARS
+               ,REG.DEAL_TYPE
+          FROM EDWPRDAWPRP.ADMIN_CTC.REG_SALES_PROMO_WK REG 
+          LEFT JOIN P0016_EXT_MPP_LIST_V3 MPP ON REG.CATEGORY = MPP.BUS_CAT
+          WHERE YEAR IN (2019,2020,2021,2022) AND SUM_UNITS>0 
+          GROUP BY
+                REG.YEAR 
+               ,QUARTER
+               ,MONTH
+               ,REG.WEEK
+               ,REG.DIVISION
+               ,REG.LOB 
+               ,REG.CATEGORY
+               ,REG.FINELINE
+               ,MPP.MPP_NAME  
+               ,REG.DEAL_TYPE
+         ));
