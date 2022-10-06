@@ -1,0 +1,119 @@
+DROP TABLE
+    REG_SALES_PROMO_WK;
+CREATE TABLE
+    REG_SALES_PROMO_WK AS
+    (
+     SELECT
+            EXTRACT_MAIN.PRODUCT_NUM
+          , EXTRACT_MAIN.PRODUCT_ID
+          , EXTRACT_MAIN.PRODUCT_ENGLISH_DESC
+          , EXTRACT_MAIN.DIVISION 
+          , EXTRACT_MAIN.LOB
+          , EXTRACT_MAIN.CATEGORY
+          , EXTRACT_MAIN.FINELINE
+          , EXTRACT_MAIN.YEAR
+          , EXTRACT_MAIN.WEEK
+          , NVL(EXTRACT_MAIN.SUM_UNITS,0)   SUM_UNITS
+          , NVL(EXTRACT_MAIN.SUM_DOLLARS,0) SUM_DOLLARS
+          , EXTRACT_MAIN.DEAL_TYPE          
+
+       FROM
+            (
+             SELECT
+                    REG_DATA.PRODUCT_ID
+                  , REG_DATA.PRODUCT_NUM
+                  , REG_DATA.PRODUCT_ENGLISH_DESC
+                  , REG_DATA.DIVISION_NM            DIVISION   
+                  , REG_DATA.LOB_NM                 LOB
+                  , REG_DATA.CATEGORY_NM            CATEGORY
+                  , REG_DATA.FINELINE_NM            FINELINE
+                  , CAL2.C444_YR_NUM                YEAR
+                  , CAL2.C444_WK_NUM                WEEK
+                  , SUM(REG_DATA.UNITS)             SUM_UNITS
+                  , SUM(REG_DATA.DOLLAR_SALES)      SUM_DOLLARS
+                  , REG_DATA.DEAL_TYPE              DEAL_TYPE
+
+               FROM
+                    (
+                     SELECT
+                            CASE
+                                WHEN CAL.DAY_WKDAY_NM IN ('FRIDAY','SATURDAY')
+                                   AND EDS.EFF_DATE IS NULL
+                                  THEN CAL.DAY_DATE + 2
+                                      
+                                      
+                                WHEN CAL.DAY_WKDAY_NM IN ('THURSDAY','FRIDAY','SATURDAY')
+                                  AND EDS.EFF_DATE IS NOT NULL
+                                  AND CAL.DAY_DATE BETWEEN EDS.EFF_DATE  AND EDS.END_DATE
+                                  THEN CAL.DAY_DATE + 3
+  
+                                WHEN CAL.DAY_WKDAY_NM IN ('THURSDAY','FRIDAY','SATURDAY')
+                                  AND EDS.EFF_DATE IS NOT NULL
+                                  AND CAL.DAY_DATE NOT BETWEEN EDS.EFF_DATE - NVL(EDS.DATEOFFSET,0) AND EDS.END_DATE
+                                  THEN CAL.DAY_DATE + 2
+                                  
+                                ELSE CAL.DAY_DATE
+                            END DEAL_PROXY_DATE
+                            
+                          , SIF.PRODUCT_ID
+                          , PROD.PRODUCT_NUM
+                          , PROD.PRODUCT_ENGLISH_DESC
+                          , PROD.DIVISION_NM
+                          , PROD.LOB_NM
+                          , PROD.CATEGORY_NM
+                          , PROD.FINELINE_NM
+                          , SIF.POS_GROSS_SALES_QTY                                                   UNITS
+                          , SIF.POS_GROSS_SALES_AMT                                            DOLLAR_SALES
+                          , TY.DEAL_TYPE                                                         DEAL_TYPE
+                                
+                       FROM
+                            EDWPRD.ADMIN_CTC.BUSINESS_SUMSUPFCT  SIF --POS data
+                 INNER JOIN
+                            EDWPRD.ADMIN_CTC.CALENDAR_DIM CAL
+                         ON
+                            SIF.DAY_ID=CAL.DAY_ID
+                 INNER JOIN
+                            EDWPRD.ADMIN_CTC.STORE_CURRENT_DIM SD
+                         ON
+                            SD.ORGANIZATION_UNIT_ID = SIF.STORE_ID
+                 INNER JOIN 
+                           EDWPRD.ADMIN_CTC.BSF_DEAL_DIM TY
+                         ON SIF.DEAL_ID = TY.DEAL_ID
+                 INNER JOIN 
+                           EDWPRD.ADMIN_CTC.PRODUCT_CTR_CURRENT_DIM PROD
+                         ON SIF.PRODUCT_ID = PROD.PRODUCT_ID                     
+                  LEFT JOIN
+                            (
+                             SELECT*
+                               FROM
+                                    EDWPRDAWPRP.ADMIN_CTC.P0001_EXT_EARLY_DEAL_STORES_V3
+                              ) EDS
+                         ON
+                            SD.STORE_NUM = EDS.STORE_NUM
+                      WHERE
+                            (
+                                1=1)
+                        AND TY.DEAL_TYPE IN ('REGULAR','MARKDOWN','IN-STORE SPECIAL') -- only regular orders come in.
+                        AND SIF.DAY_ID >=20140101 ---- PARAMETER
+                            --  AND SIF.DAY_ID                       < 20160727 ---- PARAMETER not needed since POS is always up to current day.
+                            -- AND SIF.DAY_ID  < CAST(TO_CHAR(CURRENT_DATE ,'YYYYMMDD') AS INTEGER)
+                        AND SIF.POS_GROSS_SALES_QTY >0 
+                        AND PROD.DIVISION_NM <> 'NON MERCHANDISING DIVISION'
+                        AND PROD.DIVISION_NM <> 'N/A'
+                       ) REG_DATA
+         INNER JOIN
+                    EDWPRD.ADMIN_CTC.CALENDAR_DIM CAL2
+                 ON
+                    REG_DATA.DEAL_PROXY_DATE=CAL2.DAY_DATE
+           GROUP BY
+                    REG_DATA.PRODUCT_ID
+                  , REG_DATA.PRODUCT_NUM
+                  , REG_DATA.PRODUCT_ENGLISH_DESC
+                  , REG_DATA.DIVISION_NM
+                  , REG_DATA.LOB_NM
+                  , REG_DATA.CATEGORY_NM
+                  , REG_DATA.FINELINE_NM
+                  , CAL2.C444_YR_NUM
+                  , CAL2.C444_WK_NUM
+                  , REG_DATA.DEAL_TYPE) EXTRACT_MAIN
+    );
