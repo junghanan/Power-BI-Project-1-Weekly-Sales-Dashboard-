@@ -7,6 +7,7 @@ This project was led by me during my tenure at Canadian Tire Corporation as Asso
 The project was initiated since there was no dashboard that combined all 4 types of sales due to its complexity of aligning the fiscal and promo calendar.
 
 **Dashboard Tool:** 
+
 Tool:PowerBI
 
 **What did I do:**
