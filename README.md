@@ -6,8 +6,8 @@ This project was led by me during my tenure at Canadian Tire Corporation as Asso
  
 The project was initiated since there was no dashboard that combined all 4 types of sales due to its complexity of aligning the fiscal and promo calendar.
 
-**Dashboard Tool:** Power BI 
-This was a first dashboard that was built on Power BI for Promotion Division.  
+**Dashboard Tool:** 
+Tool:PowerBI
 
 **What did I do:**
 1. Wrote all SQLs. The SQL involved 7 different tables and involved aligning the fiscal calendar and promo calendar. 
