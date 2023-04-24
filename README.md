@@ -2,23 +2,22 @@
 
 This project was led by me during my tenure at Canadian Tire Corporation as Associate Manager, Customer Promo Reporting. 
 
-
 **Why this was initiated:** 
  
-The project was initiated because there was no dashboard that combined all 4 types of sales due to difficulties aligning the fiscal and promo calendars.
-Even though stakeholders wanted to see correlations between the four types of sales, it was impossible since three types used the fiscal calendar and promo sales used the promo calendar. 
-
+The project was initiated since there was no dashboard that combined all 4 types of sales due to its complexity of aligning the fiscal and promo calendar.
 
 **Dashboard Tool:** Power BI 
 This was a first dashboard that was built on Power BI for Promotion Division.  
 
-
 **What did I do:**
-1. Wrote all SQL statements. The statement involved 7 different tables. 
+1. Wrote all SQLs. The SQL involved 7 different tables and involved aligning the fiscal calendar and promo calendar. 
 2. Worked with end-users to ensure that all required information was added to the dashboard
-2. Linked Weekly Sales Dashboard Main Data to Power BI. 
-3. Created Power BI Dashboard using Dax equations. 
-4. Led all walkthroughs with Vice President, Associate Vice Presidents, managers, individual contributors. 
-5. Maintained the dashboard and made additional features to improve the dashboard experiences. 
+3. Linked Weekly Sales Dashboard Main Data to Power BI (the main data is loaded on Github). 
+4. Created Power BI Dashboard using Dax equations. 
+5. Led all walkthroughs with Vice President, Associate Vice Presidents, managers, individual contributors. 
+6. Maintained the dashboard and made additional features to improve the dashboard experiences. 
 
+**Note**
+Due to confidential information, I could not show the actual file of the dashboard. Please refer to a screenshot of how it looks like.
 
+![Power BI Snapshot (revised)](https://user-images.githubusercontent.com/73127589/234129530-80392ff7-edfa-474c-9df5-b2f63e4e92b9.png)
