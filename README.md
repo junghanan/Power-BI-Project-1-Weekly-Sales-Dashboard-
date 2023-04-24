@@ -23,7 +23,8 @@ Tool:PowerBI
 5. Led all walkthroughs with Vice President, Associate Vice Presidents, managers, individual contributors. 
 6. Maintained the dashboard and made additional features to improve the dashboard experiences. 
 
-**Note**
+**Note**:
+
 Due to confidential information, I could not show the actual file of the dashboard. Please refer to a screenshot of how it looks like.
 
 ![Power BI Snapshot (revised)](https://user-images.githubusercontent.com/73127589/234129530-80392ff7-edfa-474c-9df5-b2f63e4e92b9.png)
