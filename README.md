@@ -12,6 +12,8 @@ Tool:PowerBI
 
 **What did I do:**
 1. Wrote all SQLs. The SQL involved 7 different tables and involved aligning the fiscal calendar and promo calendar. 
+    a. **Reg Sales (SQL)** - Aligned Reg Sales Fiscal Calendar data to Promo Calander before combining.
+    b. **Combination of Reg & Promo Sales (SQL) ** - Combined Promo data with Reg Sales.   
 2. Worked with end-users to ensure that all required information was added to the dashboard
 3. Linked Weekly Sales Dashboard Main Data to Power BI (the main data is loaded on Github). 
 4. Created Power BI Dashboard using Dax equations. 
