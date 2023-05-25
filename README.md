@@ -1,16 +1,14 @@
-**Weekly Sales Dashboard Project**
+# Weekly Sales Dashboard Project
 
-This project was led by me during my tenure at Canadian Tire Corporation as Associate Manager, Customer Promo Reporting. 
-
-**Why this was initiated:** 
+**A Purpose of the Project** 
  
 The project was initiated since there was no dashboard that combined all 4 types of sales due to its complexity of aligning the fiscal and promo calendar.
 
-**Dashboard Tool:** 
+**Dashboard Tool** 
 
 Tool:PowerBI
 
-**What did I do:**
+**Project Workflows**
 1. Wrote all SQLs. The SQL involved 7 different tables and involved aligning the fiscal calendar and promo calendar. 
     
     a. **Reg Sales (SQL)** - Aligned Reg Sales Fiscal Calendar data to Promo Calander before combining.
@@ -23,7 +21,7 @@ Tool:PowerBI
 5. Led all walkthroughs with Vice President, Associate Vice Presidents, managers, individual contributors. 
 6. Maintained the dashboard and made additional features to improve the dashboard experiences. 
 
-**Note**:
+**Note**
 
 Due to confidential information, I could not show the actual file of the dashboard. Please refer to a screenshot of how it looks like.
 
