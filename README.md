@@ -1,4 +1,4 @@
-# Weekly Sales Dashboard Project
+# Weekly Sales Dashboard
 
 **A Purpose of the Project** 
  
